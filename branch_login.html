@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Branch Login | Loan Origination System</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0b2545;
+    --navy-dark:#081b34;
+    --gold:#d4a017;
+    --bg:#f4f6f9;
+    --danger:#c0392b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
+  body{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--navy) 0%,var(--navy-dark) 55%,#02101f 100%);
+    padding:20px;
+  }
+  .login-card{
+    background:#fff;border-radius:16px;overflow:hidden;max-width:920px;width:100%;
+    box-shadow:0 25px 60px rgba(0,0,0,.35);display:grid;grid-template-columns:1fr 1fr;
+  }
+  @media (max-width:860px){ .login-card{grid-template-columns:1fr;} .login-side{display:none;} }
+
+  .login-side{
+    background:radial-gradient(circle at 30% 20%, #14345e 0%, var(--navy-dark) 70%);
+    color:#fff;padding:48px 40px;display:flex;flex-direction:column;justify-content:center;
+  }
+  .login-side i.fa-building-columns{color:var(--gold);font-size:2.4rem;margin-bottom:6px;}
+  .badge-line{height:3px;width:52px;background:var(--gold);border-radius:2px;margin:14px 0 18px;}
+  .login-side h3{font-weight:800;font-size:1.6rem;line-height:1.3;margin-bottom:12px;}
+  .login-side p{color:rgba(255,255,255,.65);font-size:.92rem;line-height:1.55;margin-bottom:22px;}
+  .login-side ul{list-style:none;font-size:.85rem;color:rgba(255,255,255,.65);}
+  .login-side li{margin-bottom:10px;}
+  .login-side li i{color:var(--gold);margin-right:8px;}
+
+  .login-form-side{padding:48px 40px;}
+  .brand-mobile{display:none;align-items:center;gap:10px;margin-bottom:6px;}
+  @media (max-width:860px){ .brand-mobile{display:flex;} }
+  .brand-mobile i{color:var(--navy);font-size:1.6rem;}
+  .brand-mobile span{font-weight:700;color:var(--navy);}
+
+  .role-pill{
+    display:inline-flex;align-items:center;gap:6px;background:#eef2f8;color:var(--navy);
+    font-size:.75rem;font-weight:700;padding:5px 12px;border-radius:999px;margin-bottom:18px;
+    text-transform:uppercase;letter-spacing:.04em;
+  }
+  .role-pill i{color:var(--gold);}
+
+  h4.welcome{font-weight:800;margin-top:4px;margin-bottom:4px;font-size:1.4rem;color:#101828;}
+  p.subtext{color:#667085;margin-bottom:26px;font-size:.92rem;}
+
+  .form-group{margin-bottom:18px;}
+  label{display:block;font-size:.8rem;font-weight:600;color:#344054;margin-bottom:6px;}
+  .input-wrap{position:relative;}
+  .input-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#98a2b3;}
+  input[type=text], input[type=password]{
+    width:100%;padding:11px 14px 11px 40px;border:1px solid #d0d5dd;border-radius:8px;
+    font-size:.92rem;outline:none;transition:.15s;
+  }
+  input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(11,37,69,.12);}
+  .toggle-eye{left:auto;right:14px;cursor:pointer;pointer-events:auto;}
+
+  .row-between{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;font-size:.83rem;}
+  .row-between label{display:flex;align-items:center;gap:6px;font-weight:500;color:#475467;margin:0;}
+  .row-between a{color:var(--navy);text-decoration:none;font-weight:600;}
+  .row-between a:hover{text-decoration:underline;}
+
+  button.btn-login{
+    width:100%;padding:13px;border:none;border-radius:8px;background:var(--navy);color:#fff;
+    font-weight:600;font-size:.95rem;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  button.btn-login:hover{background:var(--navy-dark);}
+  button.btn-login:active{transform:translateY(1px);}
+
+  .alert{
+    display:none;background:#fef3f2;border:1px solid #fda29b;color:#b42318;padding:10px 14px;
+    border-radius:8px;font-size:.85rem;margin-bottom:16px;align-items:center;gap:8px;
+  }
+  .alert.show{display:flex;}
+  .alert.success{background:#ecfdf3;border-color:#6ce9a6;color:#067647;}
+
+  hr{border:none;border-top:1px solid #eaecf0;margin:26px 0 16px;}
+  .demo-note{font-size:.8rem;color:#667085;}
+  .demo-note code{background:#f2f4f7;padding:2px 6px;border-radius:4px;color:#344054;}
+
+  .branch-select-wrap select{
+    width:100%;padding:11px 14px 11px 40px;border:1px solid #d0d5dd;border-radius:8px;
+    font-size:.92rem;outline:none;appearance:none;background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8"><path d="M1 1l5 5 5-5" stroke="%23667085" stroke-width="1.6" fill="none" fill-rule="evenodd"/></svg>') no-repeat right 14px center;
+  }
+</style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="login-side">
+    <i class="fa-solid fa-building-columns"></i>
+    <div class="badge-line"></div>
+    <h3>Loan Origination<br>System</h3>
+    <p>Branch access portal &mdash; create housing loan proposals, track their
+    progress through GM/CEO, Credit, MD and Board review, and act on anything
+    returned to you for correction.</p>
+    <ul>
+      <li><i class="fa-solid fa-circle-check"></i>Multi-applicant &amp; co-applicant proposals</li>
+      <li><i class="fa-solid fa-circle-check"></i>Live status tracking on every application</li>
+      <li><i class="fa-solid fa-circle-check"></i>Print-ready proposal packs</li>
+    </ul>
+  </div>
+
+  <div class="login-form-side">
+    <div class="brand-mobile">
+      <i class="fa-solid fa-building-columns"></i>
+      <span>Loan Origination System</span>
+    </div>
+
+    <span class="role-pill"><i class="fa-solid fa-code-branch"></i>Branch Login</span>
+    <h4 class="welcome">Welcome back</h4>
+    <p class="subtext">Sign in with your branch credentials to continue.</p>
+
+    <div class="alert" id="loginAlert"><i class="fa-solid fa-triangle-exclamation"></i><span id="loginAlertText"></span></div>
+
+    <form id="loginForm" novalidate>
+      <div class="form-group branch-select-wrap">
+        <label for="branch">Branch</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-location-dot"></i>
+          <select id="branch" required>
+            <option value="">Select your branch</option>
+            <option>GIRGAUM</option><option>DADAR</option><option>BYCULLA</option>
+            <option>GHATKOPAR (EAST)</option><option>GHATKOPAR (WEST)</option>
+            <option>GOREGAON</option><option>DAHISAR</option><option>BORIVALI</option>
+            <option>VASHI</option><option>THANE</option><option>KHARGHAR</option>
+            <option>HADAPSAR</option><option>SASWAD</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="username" placeholder="e.g. girgaum.bm" autocomplete="username" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="password" placeholder="Enter password" autocomplete="current-password" required>
+          <i class="fa-regular fa-eye toggle-eye" id="toggleEye"></i>
+        </div>
+      </div>
+
+      <div class="row-between">
+        <label><input type="checkbox" id="remember"> Remember me</label>
+        <a href="#" onclick="return false;">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn-login"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+    </form>
+
+    <hr>
+    <p class="demo-note"><i class="fa-solid fa-circle-info"></i>
+    Demo: pick any branch, username <code>branch</code>, password <code>Pass@123</code> to continue to the dashboard.</p>
+  </div>
+</div>
+
+<script>
+  const eye = document.getElementById('toggleEye');
+  const pw = document.getElementById('password');
+  eye.addEventListener('click', () => {
+    const isPw = pw.type === 'password';
+    pw.type = isPw ? 'text' : 'password';
+    eye.classList.toggle('fa-eye', !isPw);
+    eye.classList.toggle('fa-eye-slash', isPw);
+  });
+
+  const form = document.getElementById('loginForm');
+  const alertBox = document.getElementById('loginAlert');
+  const alertText = document.getElementById('loginAlertText');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const branch = document.getElementById('branch').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!branch) { showAlert('Please select your branch.'); return; }
+
+    // Demo-only check (no backend on this static prototype)
+    if (username === 'branch' && password === 'Pass@123') {
+      alertBox.classList.remove('show');
+      alertBox.classList.add('success');
+      alertText.textContent = 'Login successful — redirecting to your dashboard...';
+      alertBox.classList.add('show');
+      setTimeout(() => { window.location.href = 'branch_dashboard.html'; }, 700);
+    } else {
+      alertBox.classList.remove('success');
+      showAlert('Invalid username or password.');
+    }
+  });
+
+  function showAlert(msg) {
+    alertText.textContent = msg;
+    alertBox.classList.add('show');
+  }
+</script>
+</body>
+</html>
